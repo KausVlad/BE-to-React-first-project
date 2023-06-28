@@ -1,5 +1,15 @@
+const { registration } = require('../service/userService');
+
 const reg = async (req, res) => {
   try {
+    const { email, password } = req.body;
+    const userData = await registration(email, password);
+    res.cookie('refreshToken', userData.refreshToken, {
+      httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.json(userData);
   } catch (error) {
     console.log(error);
   }

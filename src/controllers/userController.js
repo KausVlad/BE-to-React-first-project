@@ -1,6 +1,6 @@
 const { registration } = require('../service/userService');
 
-const reg = async (req, res) => {
+const reg = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const userData = await registration(email, password);
@@ -11,29 +11,29 @@ const reg = async (req, res) => {
 
     return res.json(userData);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     res.json(['Hello', 'world']);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-const logout = async (req, res) => {
+const logout = async (req, res, next) => {
   try {
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-const refresh = async (req, res) => {
+const refresh = async (req, res, next) => {
   try {
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 

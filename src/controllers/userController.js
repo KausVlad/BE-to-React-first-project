@@ -1,19 +1,19 @@
+const reg = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const login = async (req, res) => {
   try {
-    res.join(['Hello', 'world']);
+    res.json(['Hello', 'world']);
   } catch (error) {
     console.log(error);
   }
 };
 
 const logout = async (req, res) => {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const reg = async (req, res) => {
   try {
   } catch (error) {
     console.log(error);

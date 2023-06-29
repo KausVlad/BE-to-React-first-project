@@ -79,9 +79,15 @@ const refreshService = async (refreshToken) => {
   };
 };
 
+const testService = async () => {
+  const users = await userModel.find();
+  return users;
+};
+
 module.exports = {
   logoutService,
   loginService,
   registrationService,
   refreshService,
+  testService,
 };

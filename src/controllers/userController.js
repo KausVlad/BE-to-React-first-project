@@ -3,6 +3,7 @@ const {
   loginService,
   logoutService,
   refreshService,
+  testService,
 } = require('../service/userService');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/apiError');
@@ -67,9 +68,19 @@ const refresh = async (req, res, next) => {
   }
 };
 
+const test = async (req, res, next) => {
+  try {
+    const users = await testService();
+    return res.json(users);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   login,
   logout,
   reg,
   refresh,
+  test,
 };

@@ -5,6 +5,7 @@ const {
   logout,
   reg,
   refresh,
+  test,
 } = require('../controllers/userController');
 const { body } = require('express-validator');
 
@@ -17,5 +18,6 @@ router.post(
 router.post('/login', login);
 router.post('/logout', logout);
 router.get('/refresh', refresh);
+router.get('/t', test);
 
 module.exports = router;

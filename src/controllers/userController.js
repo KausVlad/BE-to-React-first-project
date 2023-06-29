@@ -1,7 +1,13 @@
 const { registration } = require('../service/userService');
+const { validationResult } = require('express-validator');
+const ApiError = require('../exceptions/apiError');
 
 const reg = async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(ApiError.BadRequestError('Validation error', errors.array()));
+    }
     const { email, password } = req.body;
     const userData = await registration(email, password);
     res.cookie('refreshToken', userData.refreshToken, {

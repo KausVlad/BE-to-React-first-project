@@ -2,6 +2,7 @@ const {
   registrationService,
   loginService,
   logoutService,
+  refreshService,
 } = require('../service/userService');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/apiError');
@@ -53,6 +54,14 @@ const logout = async (req, res, next) => {
 
 const refresh = async (req, res, next) => {
   try {
+    const { refreshToken } = req.cookies;
+    const userData = await refreshService(refreshToken);
+
+    res.cookie('refreshToken', userData.refreshToken, {
+      httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+    return res.json(userData);
   } catch (error) {
     next(error);
   }

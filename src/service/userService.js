@@ -4,6 +4,8 @@ const {
   generateToken,
   saveToken,
   removeToken,
+  validateRefreshToken,
+  findToken,
 } = require('../service/tokenService');
 const ApiError = require('../exceptions/apiError');
 
@@ -56,8 +58,30 @@ const logoutService = async (refreshToken) => {
   return token;
 };
 
+const refreshService = async (refreshToken) => {
+  if (!refreshToken) {
+    throw ApiError.UnauthorizeError();
+  }
+  const userData = validateRefreshToken(refreshToken);
+  const tokenFromDB = await findToken(refreshToken);
+  if (!userData || !tokenFromDB) {
+    throw ApiError.UnauthorizeError();
+  }
+
+  const user = await userModel.findById(userData.id);
+  const userDto = baseDto(user);
+  const tokens = generateToken({ ...userDto });
+  await saveToken(userDto.id, tokens.refreshToken);
+
+  return {
+    ...tokens,
+    user: userDto,
+  };
+};
+
 module.exports = {
   logoutService,
   loginService,
   registrationService,
+  refreshService,
 };

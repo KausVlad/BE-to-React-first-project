@@ -60,12 +60,12 @@ const logoutService = async (refreshToken) => {
 
 const refreshService = async (refreshToken) => {
   if (!refreshToken) {
-    throw ApiError.UnauthorizeError();
+    throw ApiError.UnauthorizedError();
   }
   const userData = validateRefreshToken(refreshToken);
   const tokenFromDB = await findToken(refreshToken);
   if (!userData || !tokenFromDB) {
-    throw ApiError.UnauthorizeError();
+    throw ApiError.UnauthorizedError();
   }
 
   const user = await userModel.findById(userData.id);

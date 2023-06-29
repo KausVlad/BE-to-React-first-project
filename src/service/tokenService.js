@@ -29,7 +29,13 @@ const saveToken = async (userID, refreshToken) => {
   return token;
 };
 
+const removeToken = (refreshToken) => {
+  const tokenData = tokenModel.deleteOne({ refreshToken });
+  return tokenData;
+};
+
 module.exports = {
+  removeToken,
   generateToken,
   saveToken,
 };

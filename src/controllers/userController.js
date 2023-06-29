@@ -1,4 +1,8 @@
-const { registration } = require('../service/userService');
+const {
+  registrationService,
+  loginService,
+  logoutService,
+} = require('../service/userService');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/apiError');
 
@@ -9,12 +13,12 @@ const reg = async (req, res, next) => {
       return next(ApiError.BadRequestError('Validation error', errors.array()));
     }
     const { email, password } = req.body;
-    const userData = await registration(email, password);
+    const userData = await registrationService(email, password);
+
     res.cookie('refreshToken', userData.refreshToken, {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-
     return res.json(userData);
   } catch (error) {
     next(error);
@@ -23,7 +27,14 @@ const reg = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    res.json(['Hello', 'world']);
+    const { email, password } = req.body;
+    const userData = await loginService(email, password);
+
+    res.cookie('refreshToken', userData.refreshToken, {
+      httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+    return res.json(userData);
   } catch (error) {
     next(error);
   }
@@ -31,6 +42,10 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   try {
+    const { refreshToken } = req.cookies;
+    const token = await logoutService(refreshToken);
+    res.clearCookie('refreshToken');
+    return res.json(token);
   } catch (error) {
     next(error);
   }

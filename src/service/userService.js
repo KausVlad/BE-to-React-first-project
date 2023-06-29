@@ -1,6 +1,10 @@
 const userModel = require('../models/userModel');
 const bcrypt = require('bcrypt');
-const { generateToken, saveToken } = require('../service/tokenService');
+const {
+  generateToken,
+  saveToken,
+  removeToken,
+} = require('../service/tokenService');
 const ApiError = require('../exceptions/apiError');
 
 const baseDto = (model) => {
@@ -10,7 +14,7 @@ const baseDto = (model) => {
   };
 };
 
-const registration = async (email, password) => {
+const registrationService = async (email, password) => {
   const candidate = await userModel.findOne({ email });
   if (candidate) {
     throw ApiError.BadRequestError(`User with this ${email} already exists`);
@@ -20,7 +24,7 @@ const registration = async (email, password) => {
 
   const userDto = baseDto(user);
   const tokens = generateToken({ ...userDto });
-  await saveToken(user._id, tokens.refreshToken);
+  await saveToken(userDto.id, tokens.refreshToken);
 
   return {
     ...tokens,
@@ -28,6 +32,32 @@ const registration = async (email, password) => {
   };
 };
 
+const loginService = async (email, password) => {
+  const user = await userModel.findOne({ email });
+  if (!user) {
+    throw ApiError.BadRequestError('User not found');
+  }
+  const isPassEquals = await bcrypt.compare(password, user.password);
+  if (!isPassEquals) {
+    throw ApiError.BadRequestError('Wrong password');
+  }
+  const userDto = baseDto(user);
+  const tokens = generateToken({ ...userDto });
+  await saveToken(userDto.id, tokens.refreshToken);
+
+  return {
+    ...tokens,
+    user: userDto,
+  };
+};
+
+const logoutService = async (refreshToken) => {
+  const token = removeToken(refreshToken);
+  return token;
+};
+
 module.exports = {
-  registration,
+  logoutService,
+  loginService,
+  registrationService,
 };

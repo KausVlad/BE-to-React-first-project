@@ -1,7 +1,7 @@
 const ApiError = require('../exceptions/apiError');
 const { validateAccessToken } = require('../service/tokenService');
 
-module.exports = function (req, res, next) {
+module.exports = function authMiddleware(req, res, next) {
   try {
     const authorizationHeader = req.headers.authorization;
     if (!authorizationHeader) {

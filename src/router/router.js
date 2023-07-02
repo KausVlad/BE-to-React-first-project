@@ -19,6 +19,7 @@ router.post(
 router.post('/login', login);
 router.post('/logout', logout);
 router.get('/refresh', refresh);
-router.get('/t', test);
+router.get('/t', authMiddleware, test);
+router.get('/check', authMiddleware, refresh);
 
 module.exports = router;

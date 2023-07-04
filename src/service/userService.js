@@ -19,7 +19,7 @@ const baseDto = (model) => {
 const registrationService = async (email, password) => {
   const candidate = await userModel.findOne({ email });
   if (candidate) {
-    throw ApiError.BadRequestError(`User with this ${email} already exists`);
+    throw ApiError.BadRequestError(`User already exists`);
   }
   const hashPass = await bcrypt.hash(password, 5);
   const user = await userModel.create({ email, password: hashPass });

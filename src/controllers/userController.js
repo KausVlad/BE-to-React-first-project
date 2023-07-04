@@ -12,7 +12,12 @@ const reg = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return next(ApiError.BadRequestError('Validation error', errors.array()));
+      return next(
+        ApiError.BadRequestError(
+          'Invalid email or password. Password must be 3-30 characters.',
+          errors.array()
+        )
+      );
     }
     const { email, password } = req.body;
     const userData = await registrationService(email, password);

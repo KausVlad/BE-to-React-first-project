@@ -4,20 +4,19 @@ const {
   getAllApiKeysService,
 } = require('../service/keysService');
 
-async function addApiKey(req, res) {
+async function addApiKey(req, res, next) {
   try {
     const { emailName, apiKey } = req.body;
-    console.log(emailName, apiKey);
 
     const response = await addApiKeyService(emailName, apiKey);
     res.status(201).json(response);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 }
 
-async function deleteApiKey(req, res) {
+async function deleteApiKey(req, res, next) {
   try {
     const { emailName, apiKeyIndex } = req.body;
 
@@ -25,19 +24,19 @@ async function deleteApiKey(req, res) {
     res.json(response);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 }
 
-async function getAllApiKeys(req, res) {
+async function getAllApiKeys(req, res, next) {
   try {
-    const { emailName } = req.body;
+    const { emailName } = req.params;
 
     const keys = await getAllApiKeysService(emailName);
     res.json(keys);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 }
 

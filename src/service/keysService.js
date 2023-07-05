@@ -11,7 +11,9 @@ async function addApiKeyService(emailName, apiKey) {
       await user.save();
     }
 
-    return { message: 'API key successfully added' };
+    const [allApiKeys] = await keysModel.find({ emailName });
+
+    return { message: 'API key successfully added', apiKeys: allApiKeys };
   } catch (error) {
     throw ApiError.internalServerError();
   }
@@ -31,7 +33,9 @@ async function deleteApiKeyService(emailName, apiKeyIndex) {
     user.apiKeys.splice(apiKeyIndex, 1);
     await user.save();
 
-    return { message: 'API key deleted successfully' };
+    const [allApiKeys] = await keysModel.find({ emailName });
+
+    return { message: 'API key deleted successfully', apiKeys: allApiKeys };
   } catch (error) {
     throw ApiError.internalServerError();
   }

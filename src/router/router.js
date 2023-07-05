@@ -9,6 +9,11 @@ const {
 } = require('../controllers/userController');
 const { body } = require('express-validator');
 const authMiddleware = require('../middleware/authMiddleware');
+const {
+  addApiKey,
+  deleteApiKey,
+  getAllApiKeys,
+} = require('../controllers/keysController');
 
 router.post(
   '/reg',
@@ -21,5 +26,8 @@ router.post('/logout', logout);
 router.get('/refresh', refresh);
 router.get('/t', authMiddleware, test);
 router.get('/check', authMiddleware, refresh);
+router.post('/apiKeys', addApiKey);
+router.delete('/apiKeys', deleteApiKey);
+router.get('/apiKeys', getAllApiKeys);
 
 module.exports = router;

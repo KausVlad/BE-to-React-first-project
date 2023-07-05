@@ -32,6 +32,7 @@ const saveToken = async (userID, refreshToken) => {
 const validateAccessToken = (token) => {
   try {
     const userData = jwt.verify(token, process.env.JWT_ACCESS_TOKEN);
+    console.log(userData);
     return userData;
   } catch (error) {
     console.log(error);

@@ -19,7 +19,7 @@ const baseDto = (model) => {
 const registrationService = async (email, password) => {
   const candidate = await userModel.findOne({ email });
   if (candidate) {
-    throw ApiError.BadRequestError(`User already exists`);
+    throw ApiError.badRequestError(`User already exists`);
   }
   const hashPass = await bcrypt.hash(password, 5);
   const user = await userModel.create({ email, password: hashPass });
@@ -37,11 +37,11 @@ const registrationService = async (email, password) => {
 const loginService = async (email, password) => {
   const user = await userModel.findOne({ email });
   if (!user) {
-    throw ApiError.BadRequestError('User not found');
+    throw ApiError.badRequestError('User not found');
   }
   const isPassEquals = await bcrypt.compare(password, user.password);
   if (!isPassEquals) {
-    throw ApiError.BadRequestError('Wrong password');
+    throw ApiError.badRequestError('Wrong password');
   }
   const userDto = baseDto(user);
   const tokens = generateToken({ ...userDto });
@@ -60,12 +60,12 @@ const logoutService = async (refreshToken) => {
 
 const refreshService = async (refreshToken) => {
   if (!refreshToken) {
-    throw ApiError.UnauthorizedError();
+    throw ApiError.unauthorizedError();
   }
   const userData = validateRefreshToken(refreshToken);
   const tokenFromDB = await findToken(refreshToken);
   if (!userData || !tokenFromDB) {
-    throw ApiError.UnauthorizedError();
+    throw ApiError.unauthorizedError();
   }
 
   const user = await userModel.findById(userData.id);

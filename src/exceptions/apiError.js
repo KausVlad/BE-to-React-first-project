@@ -8,11 +8,19 @@ module.exports = class ApiError extends Error {
     this.errors = errors;
   }
 
-  static UnauthorizedError() {
+  static unauthorizedError() {
     return new ApiError(401, 'Unauthorized');
   }
 
-  static BadRequestError(massage, errors = []) {
+  static badRequestError(massage, errors = []) {
     return new ApiError(400, massage, errors);
+  }
+
+  static notFoundError(message = 'Not Found') {
+    return new ApiError(404, message);
+  }
+
+  static internalServerError(message = 'Internal Server Error') {
+    return new ApiError(500, message);
   }
 };

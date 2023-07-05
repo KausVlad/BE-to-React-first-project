@@ -13,7 +13,7 @@ const reg = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(
-        ApiError.BadRequestError(
+        ApiError.badRequestError(
           'Invalid email or password. Password must be 3-30 characters.',
           errors.array()
         )

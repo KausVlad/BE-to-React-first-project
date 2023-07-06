@@ -26,8 +26,8 @@ router.post('/logout', logout);
 router.get('/refresh', refresh);
 router.get('/t', authMiddleware, test);
 router.get('/check', authMiddleware, refresh);
-router.post('/apiKeys', addApiKey);
-router.patch('/apiKeys', deleteApiKey);
-router.get('/apiKeys/:emailName', getAllApiKeys);
+router.post('/apiKeys', authMiddleware, addApiKey);
+router.patch('/apiKeys', authMiddleware, deleteApiKey);
+router.get('/apiKeys/:emailName', authMiddleware, getAllApiKeys);
 
 module.exports = router;

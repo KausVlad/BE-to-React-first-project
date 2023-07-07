@@ -17,3 +17,8 @@
 Start the project in development mode:
 
 `npm run s`
+
+## swagger
+
+online documentation:
+https://app.swaggerhub.com/apis-docs/KAUSVIRTUAL/weatherAPI/1.0.0

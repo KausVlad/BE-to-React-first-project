@@ -1,0 +1,1 @@
+online documentation: https://app.swaggerhub.com/apis-docs/KAUSVIRTUAL/weatherAPI/1.0.0
